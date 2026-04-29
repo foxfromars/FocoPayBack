@@ -1,5 +1,6 @@
 import FormData from "form-data";
 import siengeServices from "../services/sienge.services.js";
+import { sendBillCreationEmailNotification } from "../helpers/siengeEmailNotification.helper.js";
 
 class SiengeController {
   async getCompanies(req, res) {
@@ -113,7 +114,13 @@ class SiengeController {
   async createBills(req, res) {
     try {
       const result = await siengeServices.createBills(req.body);
-      res.send(result.headers.location.split("/")?.slice(-1)?.[0]);
+      const id = result.headers.location.split("/")?.slice(-1)?.[0];
+      await sendBillCreationEmailNotification(
+        id,
+        req.body,
+        req?.userInfo?.email,
+      );
+      res.send(id);
     } catch (err) {
       console.error(err);
       res
@@ -133,7 +140,7 @@ class SiengeController {
       const result = await siengeServices.appendAttachmentToBill(
         req.params.id,
         externalFormData,
-        req.query
+        req.query,
       );
       res.json(result.data);
     } catch (err) {

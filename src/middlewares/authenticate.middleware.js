@@ -6,7 +6,7 @@ class AuthenticateMiddleware {
       if (!req.headers.authorization)
         throw new Error("Authorization header not found");
       const token = req.headers.authorization.split(" ")[1];
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET).data;
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       req.userInfo = decodedToken;
       next();
     } catch (err) {
