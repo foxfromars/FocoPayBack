@@ -18,7 +18,7 @@ export async function sendBillCreationEmailNotification( billId, billData, userE
 
   await transporter.sendMail({
     from: process.env.EMAIL_USERNAME,
-    to: "johhanes@hotmail.com",
+    to: "consultoria@focoinfo.com.br",
     subject: `Novo Título ${billId}`,
     html: `
       <p>Olá,<p>
